@@ -4,6 +4,7 @@ import users from './routes/users';
 import auth from './routes/auth'
 import https from 'https';
 import fs from 'fs'
+import bodyParser from 'body-parser'
 
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -53,8 +54,8 @@ const sslOptions = {
 
 
 // Configuring the built-in express body parser middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 app.use('/locations', Location);

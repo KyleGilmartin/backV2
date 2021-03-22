@@ -1,4 +1,5 @@
 import { Location } from "./locationModel";
+import mongoose from 'mongoose';
 
 
 function readLocations(req, res, options = []) {
@@ -20,7 +21,7 @@ function readLocations(req, res, options = []) {
 
     if (id) {
 
-        filter.id = id
+        filter.uid = id
     }
 
     if (sum) {
@@ -59,16 +60,24 @@ function readLocation(req, res) {
 
 
 function createLocation(req, res) {
-    let bookDoc = new Location(req.body);
+    let bookDoc = new Location({
+        uid: req.body.uid,
+        lat: parseFloat(req.body.latitude),
+        lon: parseFloat(req.body.longitude),
+        name: req.body.location,
+        description: req.body.description,
+        image: req.body.image
+    });
     bookDoc.save()
         .then((result) => {
             console.log('Location saved');
-            res.location(result.uri)
-                .status(201)
-                .json({ id: result._id, uri: result.uri })
+            // res.location(result.uri)
+            //     .status(201)
+            //     .json({ id: result._id, uri: result.uri })
         })
         .catch((error) => {
-            res.status(412).json({ status: 'fail', message: 'not created' + error })
+            console.error(error)
+            // res.status(412).json({ status: 'fail', message: 'not created' + error })
         });
     console.log('Promising to save');
 }
